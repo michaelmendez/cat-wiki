@@ -13,7 +13,7 @@ const AutoComplete: FunctionComponent<AutoCompleteProps> = ({
 }) => {
   const { data, isLoading } = useSWR<Array<{ id: string; name: string }>>(
     searchValue ? `/api/breeds?search=${searchValue}&limit=${10}` : null,
-    catApi,
+    (url) => catApi(url, { isInternal: true }),
     {
       revalidateOnFocus: false,
       dedupingInterval: 2000,
