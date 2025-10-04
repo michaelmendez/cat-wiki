@@ -1,21 +1,30 @@
 import type { CatBreedDetails, CatBreedImageData } from '@/types/common';
+import { API_CONFIG, buildApiUrl, buildInternalApiUrl } from '@/lib/config/api';
 
 type CatBreedParams = Partial<
   Record<'limit' | 'breed_ids' | 'has_breeds', string>
 >;
 
-const catApi = async (path: string) => {
+type ApiCallOptions = {
+  isInternal?: boolean;
+  params?: Record<string, string>;
+};
+
+const catApi = async (endpoint: string, options: ApiCallOptions = {}) => {
   let instance = null;
 
   try {
-    // Check if path starts with /api (internal API) or external API
-    const url = path.startsWith('/api')
-      ? path
-      : `${process.env.NEXT_PUBLIC_CAT_API_URL}${path}`;
+    const { isInternal = false, params } = options;
 
-    const headers: HeadersInit = path.startsWith('/api')
+    // Build URL based on whether it's internal or external API
+    const url = isInternal
+      ? buildInternalApiUrl(endpoint)
+      : buildApiUrl(endpoint, params);
+
+    // Set headers based on API type
+    const headers: HeadersInit = isInternal
       ? {} // No API key needed for internal routes
-      : { 'x-api-key': process.env.NEXT_PUBLIC_CAT_API_KEY as string };
+      : { 'x-api-key': API_CONFIG.CAT_API.API_KEY };
 
     const response = await fetch(url, { headers });
 
@@ -30,7 +39,7 @@ const catApi = async (path: string) => {
 };
 
 const getCatBreeds = async (): Promise<CatBreedDetails[]> => {
-  const catBreeds = await catApi('/breeds');
+  const catBreeds = await catApi(API_CONFIG.CAT_API.ENDPOINTS.BREEDS);
   return catBreeds;
 };
 
@@ -49,15 +58,16 @@ const filterBreeds = (
 };
 
 const getCatBreed = async (params: CatBreedParams) => {
-  const queryParams = new URLSearchParams(params).toString();
   const catBreed = (await catApi(
-    `/images/search?${queryParams}`
+    API_CONFIG.CAT_API.ENDPOINTS.IMAGES_SEARCH,
+    { params: params as Record<string, string> }
   )) as CatBreedImageData[];
   return catBreed;
 };
 
 export const incrementSearchCounter = async (breedId: string) => {
-  return await fetch(`/api/breeds/${breedId}`, { method: 'POST' });
+  const url = buildInternalApiUrl(`${API_CONFIG.INTERNAL_API.BREEDS}/${breedId}`);
+  return await fetch(url, { method: 'POST' });
 };
 
 export { getCatBreed, getCatBreeds, filterBreeds, catApi };

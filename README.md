@@ -75,8 +75,8 @@ $ cp .env.example .env
 # Your Cat API key from https://thecatapi.com
 NEXT_PUBLIC_CAT_API_KEY=your_cat_api_key_here
 
-# The Cat API base URL (no need to change)
-NEXT_PUBLIC_CAT_API_URL=https://api.thecatapi.com/v1
+# The Cat API base URL (server-side only - more secure)
+CAT_API_URL=https://api.thecatapi.com/v1
 
 # Your app's URL/domain
 # For local development:
@@ -106,6 +106,12 @@ $ pnpm tsx scripts/createIndexes.ts
 ```
 
 This creates optimized indexes for faster queries.
+
+## Security Notes
+
+- `CAT_API_URL` is a server-side environment variable (no `NEXT_PUBLIC_` prefix) to prevent exposure in client-side bundles
+- API endpoints are centralized in `lib/config/api.ts` to avoid magic strings and improve maintainability
+- Environment variables are validated at build time to catch configuration errors early
 
 
 ## License
