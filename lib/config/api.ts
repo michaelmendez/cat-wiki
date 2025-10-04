@@ -6,7 +6,7 @@
 // Validate required environment variables at build time
 const requiredEnvVars = {
   CAT_API_KEY: process.env.NEXT_PUBLIC_CAT_API_KEY,
-  CAT_API_URL: process.env.CAT_API_URL,
+  CAT_API_URL: process.env.NEXT_PUBLIC_CAT_API_URL,
 } as const;
 
 // Check for missing environment variables

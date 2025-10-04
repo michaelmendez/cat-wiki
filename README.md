@@ -75,8 +75,8 @@ $ cp .env.example .env
 # Your Cat API key from https://thecatapi.com
 NEXT_PUBLIC_CAT_API_KEY=your_cat_api_key_here
 
-# The Cat API base URL (server-side only - more secure)
-CAT_API_URL=https://api.thecatapi.com/v1
+# The Cat API base URL
+NEXT_PUBLIC_CAT_API_URL=https://api.thecatapi.com/v1
 
 # Your app's URL/domain
 # For local development:
@@ -107,11 +107,30 @@ $ pnpm tsx scripts/createIndexes.ts
 
 This creates optimized indexes for faster queries.
 
+## Deployment Notes
+
+### Netlify Configuration
+
+If you're deploying to Netlify and encounter a secrets scanning warning for `CAT_API_URL`, you can configure Netlify to skip scanning for this variable since it's a public API endpoint:
+
+1. Go to your Netlify project dashboard
+2. Navigate to **Site configuration** → **Environment variables**
+3. Click **Add a variable** → **Add a single variable**
+4. Set:
+   - **Key**: `SECRETS_SCAN_OMIT_KEYS`
+   - **Value**: `NEXT_PUBLIC_CAT_API_URL`
+5. Click **Create variable**
+6. Redeploy your site
+
+This is safe because `https://api.thecatapi.com/v1` is a public API endpoint, not a secret value.
+
 ## Security Notes
 
-- `CAT_API_URL` is a server-side environment variable (no `NEXT_PUBLIC_` prefix) to prevent exposure in client-side bundles
+- `NEXT_PUBLIC_CAT_API_URL` is a public environment variable (with `NEXT_PUBLIC_` prefix) as it's a public API endpoint
+- `NEXT_PUBLIC_CAT_API_KEY` is prefixed with `NEXT_PUBLIC_` as required by The Cat API's usage pattern
 - API endpoints are centralized in `lib/config/api.ts` to avoid magic strings and improve maintainability
 - Environment variables are validated at build time to catch configuration errors early
+- Never commit your actual `.env` file to version control
 
 
 ## License

@@ -13,11 +13,6 @@ const nextConfig = {
   // Optimize power usage
   poweredByHeader: false,
 
-  env: {
-    MONGODB_URI: process.env.MONGODB_URI,
-    APP_URL: process.env.APP_URL,
-  },
-
   images: {
     remotePatterns: [
       {
@@ -32,9 +27,6 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60,
   },
-
-  // Enable SWC minification (faster than Terser)
-  swcMinify: true,
 
   webpack(config, { isServer }) {
     config.module.rules.push({
