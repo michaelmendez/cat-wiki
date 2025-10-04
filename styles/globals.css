@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brown-900: #291507;
+  --color-brown-100: #544439;
+}
+
+/* Custom background image utility */
+.bg-cat {
+  background-image: url('../public/background.webp');
+}
+
+:root {
+  --primary: transparent;
+  --secondary: lightgrey;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--secondary) var(--primary);
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 22px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--primary);
+  border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  border: 8px solid rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+  border-radius: 20px;
+  background-color: var(--secondary);
+}
+
+html {
+  @apply text-brown-900;
+}
