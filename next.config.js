@@ -1,4 +1,10 @@
 /** @type {import('next').NextConfig} */
+
+// Bundle analyzer configuration
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 const nextConfig = {
   reactStrictMode: true,
 
@@ -16,6 +22,13 @@ const nextConfig = {
   // Optimize power usage
   poweredByHeader: false,
 
+  // Modularize imports for better tree-shaking
+  modularizeImports: {
+    'react-icons': {
+      transform: 'react-icons/{{member}}',
+    },
+  },
+
   images: {
     remotePatterns: [
       {
@@ -28,7 +41,7 @@ const nextConfig = {
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60,
+    minimumCacheTTL: 31536000, // 1 year
   },
 
   webpack(config, { isServer }) {
@@ -57,7 +70,7 @@ const nextConfig = {
               return module.size() > 160000 && /node_modules[/\\]/.test(module.identifier());
             },
             name(module) {
-              const hash = require('crypto').createHash('sha1');
+              const hash = require('node:crypto').createHash('sha1');
               hash.update(module.libIdent({ context: config.context }));
               return hash.digest('hex').substring(0, 8);
             },
@@ -80,4 +93,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withBundleAnalyzer(nextConfig);

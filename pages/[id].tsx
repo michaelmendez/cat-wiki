@@ -6,7 +6,7 @@ import {
 import Head from 'next/head';
 import { getCatBreed, getCatBreeds } from '@/lib/api/api';
 import type { CatBreedDetails } from '@/types/common';
-import { ParsedUrlQuery } from 'querystring';
+import { ParsedUrlQuery } from 'node:querystring';
 import CatDetails from '@/components/catInfo/CatDetails';
 
 type GalleryImage = {
@@ -51,8 +51,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
     }));
 
   return {
-    paths: ids,
-    fallback: false,
+    paths: ids.slice(0, 10), // Pre-render only top 10 breeds at build time
+    fallback: 'blocking', // Generate remaining pages on-demand
   };
 };
 
@@ -82,8 +82,8 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
     // Return only serializable data
     return {
       props: {
-        catDetails: JSON.parse(JSON.stringify(breed || {})),
-        galleryData: JSON.parse(JSON.stringify(galleryData)),
+        catDetails: structuredClone(breed || {}),
+        galleryData: structuredClone(galleryData),
       },
     };
   } catch (error) {
@@ -91,7 +91,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
     // Return empty data if there's an error
     return {
       props: {
-        catDetails: {},
+        catDetails: {} as CatBreedDetails,
         galleryData: [],
       },
     };

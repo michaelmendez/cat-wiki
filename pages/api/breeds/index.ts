@@ -16,6 +16,9 @@ export default async function handler(
   req: NextCustomApiRequest,
   res: NextApiResponse<Array<{ id: string; name: string }> | CatBreedImageData[] | ErrorResponse>
 ) {
+  // Set cache headers for better performance
+  res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
+
   try {
     let response: Array<{ id: string; name: string }> | CatBreedDBCollection[] = [];
 

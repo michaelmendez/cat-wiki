@@ -10,6 +10,33 @@ type ApiCallOptions = {
   params?: Record<string, string>;
 };
 
+/**
+ * Fetch with timeout to prevent hanging requests
+ */
+const fetchWithTimeout = async (
+  url: string,
+  options: RequestInit,
+  timeout = 10000
+): Promise<Response> => {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+
+  try {
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    });
+    clearTimeout(id);
+    return response;
+  } catch (error) {
+    clearTimeout(id);
+    if ((error as Error).name === 'AbortError') {
+      throw new Error('Request timeout');
+    }
+    throw error;
+  }
+};
+
 const catApi = async (endpoint: string, options: ApiCallOptions = {}) => {
   let instance = null;
 
@@ -26,7 +53,7 @@ const catApi = async (endpoint: string, options: ApiCallOptions = {}) => {
       ? {} // No API key needed for internal routes
       : { 'x-api-key': API_CONFIG.CAT_API.API_KEY };
 
-    const response = await fetch(url, { headers });
+    const response = await fetchWithTimeout(url, { headers }, 10000);
 
     if (response?.ok) {
       instance = await response.json();

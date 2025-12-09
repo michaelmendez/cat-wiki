@@ -32,6 +32,6 @@ export const getStaticProps = async () => {
     props: {
       mostSearchedBreeds,
     },
-    revalidate: 60, // Regenerate page every 60 seconds
+    revalidate: 3600, // Regenerate page every hour
   };
 };

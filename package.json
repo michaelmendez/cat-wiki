@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "analyze": "ANALYZE=true next build"
   },
   "dependencies": {
     "@types/react": "19.2.7",
@@ -26,6 +27,7 @@
     "yet-another-react-lightbox": "^3.26.0"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^16.0.8",
     "@svgr/webpack": "^8.1.0",
     "@tailwindcss/postcss": "^4.1.17",
     "@types/node": "^24.10.2",

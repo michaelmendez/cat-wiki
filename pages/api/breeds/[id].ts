@@ -11,6 +11,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data | ErrorResponse>
 ) {
+  // Set cache headers
+  res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=3600');
+
   try {
     const { id } = req.query;
     const db = await catWikiDB();

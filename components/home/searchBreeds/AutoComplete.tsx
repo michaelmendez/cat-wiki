@@ -18,6 +18,8 @@ const AutoComplete: FunctionComponent<AutoCompleteProps> = ({
       revalidateOnFocus: false,
       dedupingInterval: 2000,
       keepPreviousData: true,
+      revalidateIfStale: false,
+      revalidateOnReconnect: false,
     }
   );
 
