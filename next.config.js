@@ -2,6 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
 
+  // Enable Turbopack (Next.js 16+)
+  turbopack: {},
+
   // Performance optimizations
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',

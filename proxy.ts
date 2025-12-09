@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   // Skip referer check in development or if APP_URL is not set
   if (process.env.NODE_ENV === 'development' || !process.env.APP_URL) {
     return NextResponse.next();

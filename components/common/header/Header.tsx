@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { FunctionComponent } from 'react';
 import CatWikiLogo from '@/public/logo.svg';
 
@@ -8,7 +9,7 @@ const Header: FunctionComponent<HeaderProps> = () => {
   return (
     <nav className="py-5">
       <Link href="/">
-        <CatWikiLogo width={150} />
+        <Image src={CatWikiLogo} alt="CatWiki Logo" width={150} height={50} />
       </Link>
     </nav>
   );
