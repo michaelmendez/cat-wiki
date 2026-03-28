@@ -1,13 +1,13 @@
-import {
-  GetStaticPaths,
-  GetStaticProps,
-  InferGetStaticPropsType,
-} from 'next/types';
-import Head from 'next/head';
+import CatDetails from '@/components/catInfo/CatDetails';
 import { getCatBreed, getCatBreeds } from '@/lib/api/api';
 import type { CatBreedDetails } from '@/types/common';
+import Head from 'next/head';
+import {
+    GetStaticPaths,
+    GetStaticProps,
+    InferGetStaticPropsType,
+} from 'next/types';
 import { ParsedUrlQuery } from 'node:querystring';
-import CatDetails from '@/components/catInfo/CatDetails';
 
 type GalleryImage = {
   src: string;
@@ -51,8 +51,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
     }));
 
   return {
-    paths: ids.slice(0, 10), // Pre-render only top 10 breeds at build time
-    fallback: 'blocking', // Generate remaining pages on-demand
+    paths: ids,
+    fallback: false,
   };
 };
 
@@ -85,6 +85,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
         catDetails: structuredClone(breed || {}),
         galleryData: structuredClone(galleryData),
       },
+      revalidate: 3600, // Regenerate page every hour
     };
   } catch (error) {
     console.error(`Error fetching data for breed ${params?.id}:`, error);
@@ -94,6 +95,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
         catDetails: {} as CatBreedDetails,
         galleryData: [],
       },
+      revalidate: 3600,
     };
   }
 };
