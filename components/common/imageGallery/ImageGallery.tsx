@@ -1,7 +1,7 @@
-import { FC, useState, useCallback, memo, lazy, Suspense } from 'react';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { FC, lazy, memo, Suspense, useCallback, useState } from 'react';
 import 'yet-another-react-lightbox/styles.css';
+import SkeletonImage from '../skeleton/SkeletonImage';
 
 const Lightbox = lazy(() => import('yet-another-react-lightbox'));
 
@@ -38,7 +38,7 @@ const ImageGallery: FC<ImageGallery> = memo(({
             className="relative aspect-square overflow-hidden rounded-lg cursor-pointer"
             onClick={() => handleClick(idx)}
           >
-            <Image
+            <SkeletonImage
               src={image.src}
               alt={image.alt}
               fill

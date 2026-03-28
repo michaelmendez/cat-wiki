@@ -1,9 +1,10 @@
+import type { CatBreedImageData } from '@/types/common';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FunctionComponent } from 'react';
 import { MdArrowRightAlt } from 'react-icons/md';
-import { motion } from 'framer-motion';
-import type { CatBreedImageData } from '@/types/common';
+import SkeletonImage from '../../common/skeleton/SkeletonImage';
 
 export interface MostSearchedBreedsProps {
   breeds: CatBreedImageData[];
@@ -13,12 +14,8 @@ const MostSearchedBreeds: FunctionComponent<MostSearchedBreedsProps> = ({
   breeds,
 }) => {
   return (
-    <div
-      className={`grid ${
-        breeds?.length ? 'grid-rows-3' : 'grid-rows-1'
-      } bg-stone-300`}
-    >
-      <span className="row-span-full font-semibold">
+    <div className="flex flex-col bg-stone-300 px-0 py-6">
+      <span className="font-semibold mb-4">
         <p>Most Searched Breeds</p>
         <div className="border-solid border-b-4 border-brown-900 w-14 h-2" />
       </span>
@@ -36,46 +33,48 @@ const MostSearchedBreeds: FunctionComponent<MostSearchedBreedsProps> = ({
           />
         </div>
       ) : (
-        <div className="grid grid-rows-2">
-          <div className="grid lg:grid-cols-2 row-span-full my-10">
-            <h3 className="md:text-6xl text-2xl font-bold mb-5 lg:mb-0">
+        <>
+          <div className="flex flex-col lg:flex-row lg:items-end mb-10 gap-3">
+            <h3 className="md:text-6xl text-2xl font-bold flex-1">
               66+ Breeds For You to Discover
             </h3>
-            <Link className="text-right self-end" href="/top10">
-              <div className="flex lg:justify-end items-center justify-items-end text-brown-100">
+            <Link href="/top10">
+              <div className="flex items-center text-brown-100">
                 <p>SEE MORE</p>
                 <MdArrowRightAlt fontSize={24} />
               </div>
             </Link>
           </div>
           <div
-            className={`md:flex grid grid-cols-2 ${
-              breeds?.length > 2 ? 'justify-between' : 'justify-around'
-            } gap-6 md:mb-1 mb-10`}
+            className={`grid grid-cols-2 md:flex ${
+              breeds?.length > 2 ? 'md:justify-between' : 'md:justify-around'
+            } gap-4 md:gap-6 mb-10`}
           >
             {breeds?.map(({ id, url, name }, index: number) => (
               <motion.button
                 key={id || index}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className='h-fit'
+                className='h-fit w-full'
               >
-                <Link href={`/${id}`} className="">
-                  <Image
-                    src={url}
-                    alt={name}
-                    width={350}
-                    height={350}
-                    className="object-center object-cover rounded-3xl lg:h-[250px] mb-5 h-[200px]"
-                    priority={index === 0}
-                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 350px"
-                  />
-                  <p className="font-semibold">{name}</p>
+                <Link href={`/${id}`} className="block">
+                  <div className="relative rounded-3xl overflow-hidden w-full aspect-square lg:w-[250px] lg:h-[250px] mb-3">
+                    <SkeletonImage
+                      src={url}
+                      alt={name}
+                      fill
+                      className="object-cover object-center"
+                      priority={index === 0}
+                      sizes="(max-width: 768px) 50vw, (max-width: 1024px) 200px, 250px"
+                      quality={90}
+                    />
+                  </div>
+                  <p className="font-semibold text-sm md:text-base">{name}</p>
                 </Link>
               </motion.button>
             ))}
           </div>
-        </div>
+        </>
       )}
     </div>
   );

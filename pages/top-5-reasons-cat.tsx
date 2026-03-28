@@ -1,6 +1,6 @@
-import { FunctionComponent } from 'react';
-import Image from 'next/image';
 import Head from 'next/head';
+import { FunctionComponent } from 'react';
+import SkeletonImage from '../components/common/skeleton/SkeletonImage';
 
 interface Top5ReasonsCatProps {}
 
@@ -14,12 +14,13 @@ const Top5ReasonsCat: FunctionComponent<Top5ReasonsCatProps> = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="grid place-items-center md:mx-52 md:mb-5">
-        <Image
+        <SkeletonImage
           src="/britishShorthair.webp"
           width={600}
           height={600}
           alt="British Shorthair Cat"
-          className="mb-10 rounded-3xl"
+          className="rounded-3xl"
+          containerClassName="mb-10"
         />
         <div className="grid justify-center md:text-justify [&>h3]:font-semibold [&>h3]:text-3xl [&>p]:mb-10">
           <p>

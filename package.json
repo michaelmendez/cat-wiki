@@ -10,34 +10,34 @@
     "analyze": "ANALYZE=true next build"
   },
   "dependencies": {
-    "@types/react": "19.2.7",
+    "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
-    "eslint": "9.37.0",
-    "eslint-config-next": "16.0.8",
+    "eslint": "10.1.0",
+    "eslint-config-next": "16.2.1",
     "framer-motion": "^12.23.25",
     "mongodb": "^6.21.0",
-    "next": "16.0.8",
-    "react": "19.2.1",
-    "react-dom": "19.2.1",
+    "next": "16.2.1",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
     "react-icons": "^5.5.0",
     "react-loading-skeleton": "^3.5.0",
     "sharp": "^0.34.5",
     "swr": "^2.3.7",
-    "typescript": "5.9.3",
+    "typescript": "6.0.2",
     "yet-another-react-lightbox": "^3.26.0"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^16.0.8",
     "@svgr/webpack": "^8.1.0",
     "@tailwindcss/postcss": "^4.1.17",
-    "@types/node": "^24.10.2",
+    "@types/node": "^25.5.0",
     "autoprefixer": "^10.4.22",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.17"
   },
   "pnpm": {
     "overrides": {
-      "@types/react": "19.2.7",
+      "@types/react": "19.2.14",
       "@types/react-dom": "19.2.3"
     }
   }

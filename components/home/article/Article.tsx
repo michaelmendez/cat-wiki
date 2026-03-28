@@ -1,7 +1,7 @@
-import { FunctionComponent } from 'react';
-import Image from 'next/image';
-import { MdArrowRightAlt } from 'react-icons/md';
 import Link from 'next/link';
+import { FunctionComponent } from 'react';
+import { MdArrowRightAlt } from 'react-icons/md';
+import SkeletonImage from '../../common/skeleton/SkeletonImage';
 
 interface ArticleProps {}
 
@@ -29,30 +29,33 @@ const Article: FunctionComponent<ArticleProps> = () => {
       </div>
       <div className="grid grid-cols-2 gap-5">
         <div className="grid gap-5 justify-items-end">
-          <Image
+          <SkeletonImage
             src="/image2.webp"
             alt="Cat Photo 1"
             width={350}
             height={200}
             sizes="(max-width: 768px) 50vw, 350px"
             loading="lazy"
+            className="w-full h-auto"
           />
-          <Image
+          <SkeletonImage
             src="/image1.webp"
             alt="Cat Photo 2"
             width={250}
             height={200}
             sizes="(max-width: 768px) 50vw, 250px"
             loading="lazy"
+            className="w-full h-auto"
           />
         </div>
-        <Image
+        <SkeletonImage
           src="/image3.webp"
           alt="Cat Photo 3"
           width={250}
           height={200}
           sizes="(max-width: 768px) 50vw, 250px"
           loading="lazy"
+          className="w-full h-auto"
         />
       </div>
     </div>

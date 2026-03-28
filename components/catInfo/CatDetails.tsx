@@ -1,9 +1,9 @@
+import { CatBreedDetails } from '@/types/common';
 import { FunctionComponent } from 'react';
 import ImageGallery from '../common/imageGallery/ImageGallery';
+import SkeletonImage from '../common/skeleton/SkeletonImage';
 import CatAttribute from './CatAttribute';
 import CatAttributeLevel from './CatAttributeLevel';
-import Image from 'next/image';
-import { CatBreedDetails } from '@/types/common';
 
 type GalleryImage = {
   src: string;
@@ -24,16 +24,18 @@ const catDetails: FunctionComponent<CatDetailsProps> = ({
   return (
     <>
       <div className="grid md:grid-cols-1">
-        <Image
-          src={images?.at(0)?.src || ''}
-          alt={details?.id}
-          width={300}
-          height={300}
-          className="col-end-1 rounded-3xl h-[250px] object-cover"
-          priority
-          sizes="(max-width: 768px) 100vw, 300px"
-        />
-        <div className="md:ml-20 [&>*]:mb-5 mt-3">
+        <div className="relative col-end-1 w-[300px] h-[250px] rounded-3xl overflow-hidden">
+          <SkeletonImage
+            src={images?.at(0)?.src || ''}
+            alt={details?.id}
+            fill
+            className="object-cover"
+            priority
+            sizes="300px"
+            quality={90}
+          />
+        </div>
+        <div className="md:ml-20 *:mb-5 mt-3">
           <h3 className="text-4xl font-semibold mb-5">{details?.name}</h3>
           <p>{details?.description}</p>
           <div className="[&>p]:font-semibold [&>span]:mb-5">
