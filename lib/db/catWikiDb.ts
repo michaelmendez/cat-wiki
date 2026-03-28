@@ -5,8 +5,8 @@ export interface CatBreedDBCollection extends CatBreedImageData {
 }
 
 const catWikiDB = async () => {
-  const client = (await import('@/lib/db/mongo')).default;
-  return (await client).db('catWiki');
+  const getClientPromise = (await import('@/lib/db/mongo')).default;
+  return (await getClientPromise()).db('catWiki');
 };
 
 export default catWikiDB;

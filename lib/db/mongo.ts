@@ -4,12 +4,6 @@ const globalWithMongo = global as typeof globalThis & {
   _mongoClientPromise: Promise<MongoClient>;
 };
 
-if (!process.env.MONGODB_URI) {
-  throw new Error('Invalid environment variable: "MONGODB_URI"');
-}
-
-const URI = process.env.MONGODB_URI;
-
 // Optimized connection options
 const options: MongoClientOptions = {
   maxPoolSize: 10,
@@ -20,28 +14,22 @@ const options: MongoClientOptions = {
   compressors: ['zlib'],
 };
 
-let client;
+// Lazy: only connect on first use, so process.env is read inside a request
+// context where Cloudflare has already injected secrets.
+function getClientPromise(): Promise<MongoClient> {
+  const URI = process.env.MONGODB_URI;
+  if (!URI) {
+    throw new Error('Invalid environment variable: "MONGODB_URI"');
+  }
 
-if (!URI) {
-  throw new Error('Please add your Mongo URI to .env.local');
-}
-
-const clientPromise: Promise<MongoClient> = (() => {
   if (process.env.NODE_ENV === 'development') {
-    // In development mode, use a global variable so that the value
-    // is preserved across module reloads caused by HMR (Hot Module Replacement).
     if (typeof globalWithMongo._mongoClientPromise === 'undefined') {
-      client = new MongoClient(URI, options);
-      globalWithMongo._mongoClientPromise = client.connect();
+      globalWithMongo._mongoClientPromise = new MongoClient(URI, options).connect();
     }
     return globalWithMongo._mongoClientPromise;
-  } else {
-    // In production mode, it's best to not use a global variable.
-    client = new MongoClient(URI, options);
-    return client.connect();
   }
-})();
 
-// Export a module-scoped MongoClient promise. By doing this in a
-// separate module, the client can be shared across functions.
-export default clientPromise;
+  return new MongoClient(URI, options).connect();
+}
+
+export default getClientPromise;
