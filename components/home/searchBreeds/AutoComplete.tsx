@@ -1,8 +1,8 @@
+import Skeleton from '@/components/common/skeleton/Skeleton';
+import { catApi, incrementSearchCounter } from '@/lib/api/api';
 import Link from 'next/link';
 import { FunctionComponent, MouseEvent } from 'react';
-import Skeleton from 'react-loading-skeleton';
 import useSWR from 'swr';
-import { catApi, incrementSearchCounter } from '@/lib/api/api';
 
 interface AutoCompleteProps {
   searchValue: string;
@@ -29,7 +29,13 @@ const AutoComplete: FunctionComponent<AutoCompleteProps> = ({
 
   const renderContent = () => {
     if (isLoading) {
-      return <Skeleton count={3} className="mb-1 h-7" />;
+      return (
+        <>
+          <Skeleton className="mb-1 h-7 rounded" />
+          <Skeleton className="mb-1 h-7 rounded" />
+          <Skeleton className="mb-1 h-7 rounded" />
+        </>
+      );
     }
 
     if (data?.length === 0 || !Array.isArray(data)) {
