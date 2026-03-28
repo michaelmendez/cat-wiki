@@ -1,9 +1,9 @@
-import Head from 'next/head';
-import { InferGetStaticPropsType } from 'next/types';
 import Article from '@/components/home/article/Article';
 import MostSearchedBreeds from '@/components/home/mostSearchedBreeds/MostSearchedBreeds';
 import SearchBanner from '@/components/home/SearchBanner/SearchBanner';
 import getMostSearchedBreeds from '@/lib/api/breeds';
+import Head from 'next/head';
+import { InferGetStaticPropsType } from 'next/types';
 
 export default function Home({
   mostSearchedBreeds,
@@ -32,6 +32,5 @@ export const getStaticProps = async () => {
     props: {
       mostSearchedBreeds,
     },
-    revalidate: 3600, // Regenerate page every hour
   };
 };

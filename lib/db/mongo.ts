@@ -11,7 +11,6 @@ const options: MongoClientOptions = {
   maxIdleTimeMS: 30000,
   serverSelectionTimeoutMS: 10000,
   socketTimeoutMS: 45000,
-  compressors: ['zlib'],
 };
 
 // Lazy: only connect on first use, so process.env is read inside a request
