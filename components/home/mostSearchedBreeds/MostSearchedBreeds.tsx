@@ -1,5 +1,4 @@
 import type { CatBreedImageData } from '@/types/common';
-import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FunctionComponent } from 'react';
@@ -51,11 +50,9 @@ const MostSearchedBreeds: FunctionComponent<MostSearchedBreedsProps> = ({
             } gap-4 md:gap-6 mb-10`}
           >
             {breeds?.map(({ id, url, name }, index: number) => (
-              <motion.button
+              <button
                 key={id || index}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className='h-fit w-full'
+                className='h-fit w-full transition-transform duration-200 hover:scale-110 active:scale-90'
               >
                 <Link href={`/${id}`} className="block">
                   <div className="relative rounded-3xl overflow-hidden w-full aspect-square lg:w-[250px] lg:h-[250px] mb-3">
@@ -71,7 +68,7 @@ const MostSearchedBreeds: FunctionComponent<MostSearchedBreedsProps> = ({
                   </div>
                   <p className="font-semibold text-sm md:text-base">{name}</p>
                 </Link>
-              </motion.button>
+              </button>
             ))}
           </div>
         </>

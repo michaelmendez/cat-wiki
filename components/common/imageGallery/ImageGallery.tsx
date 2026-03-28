@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import { FC, lazy, memo, Suspense, useCallback, useState } from 'react';
 import 'yet-another-react-lightbox/styles.css';
 import SkeletonImage from '../skeleton/SkeletonImage';
@@ -31,11 +30,9 @@ const ImageGallery: FC<ImageGallery> = memo(({
     <div className={className}>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5">
         {images.map((image, idx) => (
-          <motion.div
+          <div
             key={image.src}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="relative aspect-square overflow-hidden rounded-lg cursor-pointer"
+            className="relative aspect-square overflow-hidden rounded-lg cursor-pointer transition-transform duration-200 hover:scale-105 active:scale-95"
             onClick={() => handleClick(idx)}
           >
             <SkeletonImage
@@ -46,7 +43,7 @@ const ImageGallery: FC<ImageGallery> = memo(({
               sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
               loading="lazy"
             />
-          </motion.div>
+          </div>
         ))}
       </div>
       {index >= 0 && (
