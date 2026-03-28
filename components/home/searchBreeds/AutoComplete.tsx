@@ -1,8 +1,7 @@
 import Skeleton from '@/components/common/skeleton/Skeleton';
 import { catApi, incrementSearchCounter } from '@/lib/api/api';
 import Link from 'next/link';
-import { FunctionComponent, MouseEvent } from 'react';
-import useSWR from 'swr';
+import { FunctionComponent, MouseEvent, useEffect, useRef, useState } from 'react';
 
 interface AutoCompleteProps {
   searchValue: string;
@@ -11,17 +10,32 @@ interface AutoCompleteProps {
 const AutoComplete: FunctionComponent<AutoCompleteProps> = ({
   searchValue,
 }) => {
-  const { data, isLoading } = useSWR<Array<{ id: string; name: string }>>(
-    searchValue ? `/api/breeds?search=${searchValue}&limit=${10}` : null,
-    (url) => catApi(url, { isInternal: true }),
-    {
-      revalidateOnFocus: false,
-      dedupingInterval: 2000,
-      keepPreviousData: true,
-      revalidateIfStale: false,
-      revalidateOnReconnect: false,
+  const [data, setData] = useState<Array<{ id: string; name: string }> | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(false);
+  const cacheRef = useRef<Map<string, Array<{ id: string; name: string }>>>(new Map());
+
+  useEffect(() => {
+    if (!searchValue) {
+      setData(undefined);
+      return;
     }
-  );
+    const cached = cacheRef.current.get(searchValue);
+    if (cached) {
+      setData(cached);
+      return;
+    }
+    let cancelled = false;
+    setIsLoading(true);
+    catApi(`/api/breeds?search=${searchValue}&limit=10`, { isInternal: true })
+      .then((result: Array<{ id: string; name: string }>) => {
+        if (!cancelled) {
+          cacheRef.current.set(searchValue, result);
+          setData(result);
+        }
+      })
+      .finally(() => { if (!cancelled) setIsLoading(false); });
+    return () => { cancelled = true; };
+  }, [searchValue]);
 
   const onSearchIncrementCounter = async (e: MouseEvent<HTMLAnchorElement>) => {
     await incrementSearchCounter(e?.currentTarget?.id);

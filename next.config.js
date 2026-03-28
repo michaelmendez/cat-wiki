@@ -66,19 +66,7 @@ const nextConfig = {
             priority: 40,
             enforce: true,
           },
-          lib: {
-            test(module) {
-              return module.size() > 160000 && /node_modules[/\\]/.test(module.identifier());
-            },
-            name(module) {
-              const hash = require('node:crypto').createHash('sha1');
-              hash.update(module.libIdent({ context: config.context }));
-              return hash.digest('hex').substring(0, 8);
-            },
-            priority: 30,
-            minChunks: 1,
-            reuseExistingChunk: true,
-          },
+
           commons: {
             name: 'commons',
             minChunks: 2,
