@@ -1,8 +1,8 @@
-import clientPromise from '../lib/db/mongo';
+import getClientPromise from '../lib/db/mongo';
 
 async function createIndexes() {
   try {
-    const client = await clientPromise;
+    const client = await getClientPromise();
     const db = client.db('catWiki');
     const collection = db.collection('breeds');
 
